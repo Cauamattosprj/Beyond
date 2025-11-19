@@ -2,7 +2,7 @@ package com.beyond.beyond.repositories;
 
 import org.springframework.stereotype.Repository;
 
-import com.beyond.beyond.entities.Activity;
+import com.beyond.beyond.models.Activity;
 
 import java.util.UUID;
 
