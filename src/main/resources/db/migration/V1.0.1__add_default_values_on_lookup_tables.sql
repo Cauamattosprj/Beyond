@@ -1,5 +1,5 @@
-INSERT INTO "activities_types" ("type")
+INSERT INTO activities_types (type)
 VALUES ('EARNING'), ('SPENDING');
 
-INSERT INTO "periods" ("period") 
+INSERT INTO periods (name) 
 VALUES ('HOUR'), ('DAY');
