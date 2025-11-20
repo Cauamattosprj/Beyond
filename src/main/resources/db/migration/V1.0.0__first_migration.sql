@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS points_transactions (
     id UUID NOT NULL DEFAULT RANDOM_UUID(),
     activity_id UUID NOT NULL,
     user_id UUID NOT NULL,
-    created_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
     deleted_at TIMESTAMP,
     is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
     period_id UUID NOT NULL,
