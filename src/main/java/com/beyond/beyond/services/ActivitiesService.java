@@ -3,19 +3,19 @@ package com.beyond.beyond.services;
 import org.springframework.stereotype.Service;
 
 import com.beyond.beyond.models.Activity;
-import com.beyond.beyond.repositories.ActivitiesRepository;
+import com.beyond.beyond.repositories.ActivityRepository;
 
 @Service
 public class ActivitiesService {
-    private ActivitiesRepository activitiesRepository;
+    private ActivityRepository activityRepository;
 
     public ActivitiesService(
-        ActivitiesRepository activitiesRepository
+        ActivityRepository activityRepository
     ) {
-        this.activitiesRepository = activitiesRepository;
+        this.activityRepository = activityRepository;
     }
 
     public Activity save(Activity activity) {
-        return activitiesRepository.save(activity);
+        return activityRepository.save(activity);
     }
 }
