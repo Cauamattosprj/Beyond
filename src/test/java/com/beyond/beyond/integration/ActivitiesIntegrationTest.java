@@ -116,12 +116,12 @@ class ActivitiesIntegrationTest {
                 .andExpect(jsonPath("$.pointsValue").value(15));
     }
 
-    // @Test
-    // void shouldDelete() throws Exception {
-    //     mockMvc.perform(delete("/activities/" + createdId))
-    //             .andExpect(status().isNoContent());
+    @Test
+    void shouldDelete() throws Exception {
+        mockMvc.perform(delete("/api/activities/" + createdId))
+                .andExpect(status().isNoContent());
 
-    //     mockMvc.perform(get("/activities/" + createdId))
-    //             .andExpect(status().isNotFound());
-    // }
+        mockMvc.perform(get("/api/activities/" + createdId))
+                .andExpect(status().isNotFound());
+    }
 }

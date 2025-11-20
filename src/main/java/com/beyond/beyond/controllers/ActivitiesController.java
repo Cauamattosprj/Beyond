@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.apache.catalina.connector.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +27,8 @@ import com.beyond.beyond.repositories.ActivitiesRepository;
 import com.beyond.beyond.repositories.ActivityTypeRepository;
 import com.beyond.beyond.repositories.PeriodRepository;
 import com.beyond.beyond.services.ActivitiesService;
+
+import lombok.NonNull;
 
 @RestController
 @RequestMapping("/api/activities")
@@ -92,10 +95,23 @@ public class ActivitiesController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Activity> getById(@PathVariable UUID id) {
+    public ResponseEntity<ActivityDTO> getById(@PathVariable UUID id) {
         Optional<Activity> activity = activitiesRepository.findById(id);
+        
+        if (activity.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
 
-        return activity;
+        ActivityDTO activityDTO = activityMapper.toDto(activity.get());
+
+        return ResponseEntity.status(HttpStatus.OK).body(activityDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@NonNull @PathVariable UUID id) {
+        activitiesRepository.deleteById(id);
+        
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }
