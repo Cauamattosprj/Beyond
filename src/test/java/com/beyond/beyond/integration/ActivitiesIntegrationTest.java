@@ -57,27 +57,27 @@ class ActivitiesIntegrationTest {
         createdId = responseJson.get("id").asText();
     }
 
-    // @Test
-    // void shouldCreate() throws Exception {
-    //     String json = """
-    //         {
-    //             "name": "Corrida",
-    //             "description": "Correr por 20 minutos",
-    //             "pointsValue": 20,
-    //             "isDefault": false,
-    //             "userId": null,
-    //             "periodId": "HOUR",
-    //             "activityTypeId": "EARNING"
-    //         }
-    //     """;
+    @Test
+    void shouldCreate() throws Exception {
+        String json = """
+            {
+                "name": "Corrida",
+                "description": "Correr por 20 minutos",
+                "pointsValue": 20,
+                "isDefault": false,
+                "userId": null,
+                "period": "HOUR",
+                "activityType": "EARNING"
+            }
+        """;
 
-    //     mockMvc.perform(post("/activities")
-    //                     .contentType(MediaType.APPLICATION_JSON)
-    //                     .content(json))
-    //             .andExpect(status().isCreated())
-    //             .andExpect(jsonPath("$.id").exists())
-    //             .andExpect(jsonPath("$.name").value("Corrida"));
-    // }
+        mockMvc.perform(post("/api/activities")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.name").value("Corrida"));
+    }
 
     @Test
     void shouldGetById() throws Exception {
@@ -87,12 +87,12 @@ class ActivitiesIntegrationTest {
                 .andExpect(jsonPath("$.name").value("Leitura"));
     }
 
-    // @Test
-    // void shouldListAll() throws Exception {
-    //     mockMvc.perform(get("/activities"))
-    //             .andExpect(status().isOk())
-    //             .andExpect(jsonPath("$.length()").isNotEmpty());
-    // }
+    @Test
+    void shouldListAll() throws Exception {
+        mockMvc.perform(get("/api/activities"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").isNotEmpty());
+    }
 
     // @Test
     // void shouldUpdate() throws Exception {

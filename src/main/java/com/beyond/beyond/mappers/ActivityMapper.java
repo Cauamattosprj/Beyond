@@ -1,7 +1,5 @@
 package com.beyond.beyond.mappers;
 
-
-
 import org.springframework.stereotype.Component;
 
 import com.beyond.beyond.dto.ActivityDTO;
@@ -16,20 +14,18 @@ public class ActivityMapper {
     private ActivityTypeRepository activityTypeRepository;
     private PeriodRepository periodRepository;
 
-
     public ActivityMapper(
-        ActivityTypeRepository activityTypeRepository,
-        PeriodRepository periodRepository
-    ) {
+            ActivityTypeRepository activityTypeRepository,
+            PeriodRepository periodRepository) {
         this.activityTypeRepository = activityTypeRepository;
         this.periodRepository = periodRepository;
     }
 
     public Activity toEntity(ActivityDTO dto) {
-        System.out.println(dto.toString());
-
-        ActivityType activityType = activityTypeRepository.findByType(dto.activityType()).orElseThrow(() -> new RuntimeException("Activity Type not found"));
-        Period period = periodRepository.findByName(dto.period()).orElseThrow(() -> new RuntimeException("Period not found"));
+        ActivityType activityType = activityTypeRepository.findByType(dto.activityType())
+                .orElseThrow(() -> new RuntimeException("Activity Type not found"));
+        Period period = periodRepository.findByName(dto.period())
+                .orElseThrow(() -> new RuntimeException("Period not found"));
 
         Activity activity = new Activity();
         if (dto.id() != null) {
@@ -45,7 +41,11 @@ public class ActivityMapper {
         return activity;
     }
 
-    // ActivityDTO toDTO(Activity entity) {
-    //     //TODO
-    // }
+    public ActivityDTO toDto(Activity entity) {
+        ActivityDTO activityDTO = new ActivityDTO(entity.getId(), entity.getName(), entity.getDescription(),
+                entity.getPointsValue(), entity.getIsDefault(), entity.getUserId(), entity.getPeriod().toString(),
+                entity.getActivityType().toString());
+
+        return activityDTO;
+    }
 }
