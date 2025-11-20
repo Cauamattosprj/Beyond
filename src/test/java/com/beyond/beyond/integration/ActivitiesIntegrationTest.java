@@ -94,27 +94,27 @@ class ActivitiesIntegrationTest {
                 .andExpect(jsonPath("$.length()").isNotEmpty());
     }
 
-    // @Test
-    // void shouldUpdate() throws Exception {
-    //     String updateJson = """
-    //         {
-    //             "name": "Leitura Atualizada",
-    //             "description": "Descrição atualizada",
-    //             "pointsValue": 15,
-    //             "isDefault": true,
-    //             "userId": null,
-    //             "periodId": "HOUR",
-    //             "activityTypeId": "EARNING"
-    //         }
-    //     """;
+    @Test
+    void shouldUpdate() throws Exception {
+        String updateJson = """
+            {
+                "name": "Leitura Atualizada",
+                "description": "Descrição atualizada",
+                "pointsValue": 15,
+                "isDefault": true,
+                "userId": null,
+                "period": "HOUR",
+                "activityType": "EARNING"
+            }
+        """;
 
-    //     mockMvc.perform(put("/activities/" + createdId)
-    //                     .contentType(MediaType.APPLICATION_JSON)
-    //                     .content(updateJson))
-    //             .andExpect(status().isOk())
-    //             .andExpect(jsonPath("$.name").value("Leitura Atualizada"))
-    //             .andExpect(jsonPath("$.pointsValue").value(15));
-    // }
+        mockMvc.perform(put("/api/activities/" + createdId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(updateJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Leitura Atualizada"))
+                .andExpect(jsonPath("$.pointsValue").value(15));
+    }
 
     // @Test
     // void shouldDelete() throws Exception {
