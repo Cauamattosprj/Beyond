@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.beyond.beyond.dto.ActivityDTO;
@@ -23,7 +21,7 @@ import com.beyond.beyond.mappers.ActivityMapper;
 import com.beyond.beyond.models.Activity;
 import com.beyond.beyond.models.ActivityType;
 import com.beyond.beyond.models.Period;
-import com.beyond.beyond.repositories.ActivitiesRepository;
+import com.beyond.beyond.repositories.ActivityRepository;
 import com.beyond.beyond.repositories.ActivityTypeRepository;
 import com.beyond.beyond.repositories.PeriodRepository;
 import com.beyond.beyond.services.ActivitiesService;
@@ -33,19 +31,19 @@ import lombok.NonNull;
 @RestController
 @RequestMapping("/api/activities")
 public class ActivitiesController {
-    private final ActivitiesRepository activitiesRepository;
+    private final ActivityRepository activityRepository;
     private final ActivitiesService activitiesService;
     private final ActivityMapper activityMapper;
     private final PeriodRepository periodRepository;
     private final ActivityTypeRepository activityTypeRepository;
 
     public ActivitiesController(
-            ActivitiesRepository activitiesRepository,
+            ActivityRepository activityRepository,
             ActivitiesService activitiesService,
             ActivityMapper activityMapper,
             PeriodRepository periodRepository,
             ActivityTypeRepository activityTypeRepository) {
-        this.activitiesRepository = activitiesRepository;
+        this.activityRepository = activityRepository;
         this.activitiesService = activitiesService;
         this.activityMapper = activityMapper;
         this.periodRepository = periodRepository;
@@ -56,14 +54,14 @@ public class ActivitiesController {
     public ResponseEntity<ActivityDTO> post(@RequestBody ActivityDTO dto) {
 
         Activity activity = activityMapper.toEntity(dto);
-        Activity savedActivity = activitiesRepository.save(activity);
+        Activity savedActivity = activityRepository.save(activity);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedActivity.toDto());
     }
 
     @GetMapping("")
     public ResponseEntity<List<ActivityDTO>> getAll() {
-        List<Activity> allActivities = activitiesRepository.findAll();
+        List<Activity> allActivities = activityRepository.findAll();
         List<ActivityDTO> allActivityDTOs = new ArrayList<ActivityDTO>();
         for (Activity activity : allActivities) {
             ActivityDTO dto = activityMapper.toDto(activity);
@@ -75,7 +73,7 @@ public class ActivitiesController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ActivityDTO> update(@PathVariable UUID id, @RequestBody ActivityDTO dto) {
-        Activity activity = activitiesRepository.findById(id)
+        Activity activity = activityRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Activity not found"));
         ActivityType activityType = activityTypeRepository.findByType(dto.activityType()).orElseThrow(() -> new RuntimeException("Type not found"));
         Period period = periodRepository.findByName(dto.period()).orElseThrow(() -> new RuntimeException("Period not found"));
@@ -89,14 +87,14 @@ public class ActivitiesController {
 
         ActivityDTO activityDTO = activityMapper.toDto(activity);
 
-        activitiesRepository.save(activity);
+        activityRepository.save(activity);
 
         return ResponseEntity.status(HttpStatus.OK).body(activityDTO);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ActivityDTO> getById(@PathVariable UUID id) {
-        Optional<Activity> activity = activitiesRepository.findById(id);
+        Optional<Activity> activity = activityRepository.findById(id);
         
         if (activity.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -109,7 +107,7 @@ public class ActivitiesController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@NonNull @PathVariable UUID id) {
-        activitiesRepository.deleteById(id);
+        activityRepository.deleteById(id);
         
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

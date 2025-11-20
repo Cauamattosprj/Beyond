@@ -10,6 +10,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 @Repository
-public interface ActivitiesRepository extends JpaRepository<Activity, UUID>{
+public interface ActivityRepository extends JpaRepository<Activity, UUID>{
     
 }
